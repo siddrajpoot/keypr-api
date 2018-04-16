@@ -19,8 +19,12 @@ const reservationSchema = new mongoose.Schema({
     },
     departure: {
       type: Date,
-      default: Date(+new Date() + 7 * 24 * 60 * 60 * 1000)
+      default: Date.now() + 7*24*60*60*1000
     }
+  },
+  hotelId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
   }
 });
 

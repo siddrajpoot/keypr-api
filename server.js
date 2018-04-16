@@ -22,8 +22,8 @@ app.use('/hotel', hotelRoutes);
 
 // Error handling
 app.use((req, res, next) => {
-  const error = new Error('Not found');
-  error.status(404);
+  const error = new Error('Route not found');
+  res.status(404);
   next(error);
 });
 

@@ -5,10 +5,14 @@ const router = express.Router();
 const Reservation = require('../models/reservation');
 const Hotel = require('../models/hotel');
 
-router.get('/', (req, res, next) => {
-  Reservation.find()
+// Get all reservations for specific reservation
+router.get('/:hotelId', (req, res, next) => { 
+  Reservation.find({ hotelId: req.params.hoetelId })
     .exec()
     .then(docs => {
+      if (docs.length === 0) {
+        res.status(200).json({ Message: 'No reservations made for hotel' });
+      }
       res.status(200).json(docs);
     })
     .catch(error => {
@@ -17,6 +21,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
+// Get specific reservation
 router.get('/:reservationId', (req, res, next) => {
   Reservation.findById(req.params.reservationId)
     .exec()
@@ -30,13 +35,15 @@ router.get('/:reservationId', (req, res, next) => {
     });
 });
 
+// Create reservation tied to specific hotelId
 router.post('/', (req, res, next) => {
   const reservation = new Reservation({
     _id: new mongoose.Types.ObjectId(),
     guest: {
       name: req.body.guest.name,
       email: req.body.guest.email
-    }
+    },
+    hotelId: req.body.hotelId
   });
 
   const findHotelInfo = () => {
@@ -92,6 +99,7 @@ router.post('/', (req, res, next) => {
     });
 });
 
+// Update specific reservation
 router.put('/:reservationId', (req, res, next) => {
   Reservation.update(
     { _id: req.params.reservationId },
@@ -112,7 +120,11 @@ router.put('/:reservationId', (req, res, next) => {
     .catch();
 });
 
+// Delete reservation
 router.delete('/:reservationId', (req, res, next) => {
+  if (!req.body.hotelId) {
+    res.status(400).json({ error: 'Need hotelId to delete reservation' });
+  }
   Reservation.deleteOne({ _id: req.params.reservationId })
     .exec()
     .then(result => {

@@ -13,10 +13,11 @@ const hotelSchema = new mongoose.Schema({
     required: true,
     default: 0,
     min: 0,
-    max: .1
+    max: 1
   },
   reservationCount: {
     type: Number,
+    default: 0
   }
 });
 
