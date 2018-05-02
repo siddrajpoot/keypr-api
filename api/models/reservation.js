@@ -15,11 +15,12 @@ const reservationSchema = new mongoose.Schema({
   date: {
     arrival: {
       type: Date,
-      default: Date.now
+      // default: Date.now,
+      min: Date.now
     },
     departure: {
-      type: Date,
-      default: Date.now() + 7*24*60*60*1000
+      type: Date
+      // default: Date.now() + 7 * 24 * 60 * 60 * 1000
     }
   },
   hotelId: {

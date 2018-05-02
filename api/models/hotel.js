@@ -14,10 +14,6 @@ const hotelSchema = new mongoose.Schema({
     default: 0,
     min: 0,
     max: 1
-  },
-  reservationCount: {
-    type: Number,
-    default: 0
   }
 });
 

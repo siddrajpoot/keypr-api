@@ -11,13 +11,12 @@ router.get('/', (req, res, next) => {
     .exec()
     .then(docs => {
       if (docs.length === 0) {
-        res.status(400).json({ Message: 'No hotels exist' });
+        res.status(400).json({ Error: 'No hotels exist' });
       } else {
         res.status(200).json(docs);
       }
     })
     .catch(error => {
-      console.log(error);
       res.status(500).json({ error });
     });
 });
@@ -28,13 +27,12 @@ router.get('/:hotelId', (req, res, next) => {
     .exec()
     .then(doc => {
       if (!doc) {
-        res.status(400).json({ Message: 'Hotel does not exist' });
+        res.status(400).json({ Error: 'Hotel does not exist' });
       } else {
         res.status(200).json(doc);
       }
     })
     .catch(error => {
-      console.log(error);
       res.status(500).json({ error });
     });
 });
@@ -50,11 +48,9 @@ router.post('/', (req, res, next) => {
   hotel
     .save()
     .then(result => {
-      console.log(result);
       res.status(201).json({ createdConfig: hotel });
     })
     .catch(error => {
-      console.log(error);
       res.status(500).json({ error });
     });
 });
@@ -72,11 +68,15 @@ router.put('/:hotelId', (req, res, next) => {
   )
     .exec()
     .then(result => {
-      console.log(result);
-      res.status(200).json(result);
+      if (result.n === 0) {
+        res.send(400).json({ Error: 'No hotel found to update' });
+      } else if (result.nModified === 0) {
+        res.status(400).json({ Error: 'No update made' });
+      } else {
+        res.status(200).json({ Success: 'Update made to hotel' });
+      }
     })
     .catch(error => {
-      console.log(error);
       res.status(500).json({ error });
     });
 });
@@ -86,14 +86,13 @@ router.delete('/:hotelId', (req, res, next) => {
   Hotel.deleteOne({ _id: req.params.hotelId })
     .exec()
     .then(result => {
-      if (result.n === '0') {
-        res.status(400).json({ message: 'No hotel found' });
+      if (result.n === 0) {
+        res.status(400).json({ Error: 'No hotel found' });
       } else {
-        res.status(200).json(result);
+        res.status(200).json({ Success: 'Hotel successfully deleted' });
       }
     })
     .catch(error => {
-      console.log(error);
       res.status(500).json({ error });
     });
 });
