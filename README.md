@@ -6,10 +6,6 @@ This project was made for the keypr backend challenge.
 
 Will need Node.js installed on your computer and API testing tool to make api request (ex. Postman).
 
-```
-Give examples
-```
-
 ### Installing
 
 Clone repo into directory of your choosing.
