@@ -31,8 +31,6 @@ This APIs purpose is the hotel config. Main fields are:
 
     Overbook         - Set percentage of overbooking level you want for each hotel
 
-    ReservationCount - How many reservations have been made for each room
-
 * **URL**
 
   /hotel
